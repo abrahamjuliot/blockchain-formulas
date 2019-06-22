@@ -18,14 +18,14 @@ function cmcap(apiKey) {
   }
 }
 
-function cacheData(key, coins) {
+function cacheData(key, coins, api) {
   var cache = CacheService.getDocumentCache()
   var json = cache.get(key)
   var minutes = 60
 
   if (!json) {
     var url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol='+coins.join(',')
-    var api = cmcap('8e31b4d4-c294-40e6-8fcc-bdaeadefd99e')
+    var api = cmcap(api)
     var res = UrlFetchApp.fetch(url, api.options)
     json = res.getContentText()
     cache.put(key, json, minutes*100)
@@ -40,8 +40,8 @@ function coins() {
 }
 
 
-function getPrice(amt, coin) {
-  var json = cacheData('data', coins())
+function getPrice(amt, coin, api) {
+  var json = cacheData('data', coins(), api)
   var res = JSON.parse(json)
   var price = res.data[coin].quote['USD'].price
   return amt*price 
