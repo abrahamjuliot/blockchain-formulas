@@ -1,5 +1,5 @@
 # blockchains
-Google Apps Script (Sheets) - API Wallet Balance and Market Price
+Wallet Balance and Market Price via Google Apps Script (Sheets)
 
 ## API's
 - BTC
