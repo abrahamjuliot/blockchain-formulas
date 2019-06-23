@@ -37,14 +37,16 @@ function blockchain() {
         decimalPlace: 18
       }
     },
-    ETH_TOKEN: { 
-      url: function(wallet, apiKey, contract) { return 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress='+contract+'&address='+wallet+'&tag=latest&apikey='+apiKey},
-      balance: function(res) { return res.result },
-      decimalPlace: 18
+    ETH_TOKEN: function (contract) {
+      return {
+        url: function(wallet, apiKey) { return 'https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress='+contract+'&address='+wallet+'&tag=latest&apikey='+apiKey},
+        balance: function(res) { return res.result },
+        decimalPlace: 18
+      }
     },
-    BAT: function() { return this.ETH_TOKEN },
-    ZRX: function() { return this.ETH_TOKEN },
-    NEXO: function() { return this.ETH_TOKEN },
+    BAT: function() { return this.ETH_TOKEN('0x0d8775f648430679a709e98d2b0cb6250d2887ef') },
+    ZRX: function() { return this.ETH_TOKEN('0xe41d2489571d322189246dafa5ebde1f4699f498') },
+    NEXO: function() { return this.ETH_TOKEN('0xb62132e35a6c13ee1ee0f84dc5d40bad8d815206') },
     ZEC: function() {
       return { 
         url: function(wallet) { return 'https://chain.so/api/v2/get_address_balance/ZEC/'+wallet},
@@ -119,9 +121,9 @@ function fetch(url) {
   return res
 }
 
-function WALLET(coin, wallet, optionalApiKey, optionalContract) {
+function WALLET(coin, wallet, optionalApiKey) {
   var api = blockchain()[coin]()  
-  var url = api.url(wallet, optionalApiKey, optionalContract)
+  var url = api.url(wallet, optionalApiKey)
    
   var res = fetch(url)
   var balance = api.balance(res, wallet) // wallet is optional
