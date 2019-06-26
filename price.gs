@@ -74,12 +74,17 @@ function getPrice(amt, coin, api) {
   return amt*price 
 }
 
+function getPercentChange(span, coin, api) {
+  //if (span != '1h' || span != '24h' || span != '7d') { return 'no data'} 
+  var key = 'data'
+  var json = cacheData(key, coins(), api)
+  var res = JSON.parse(json)
+  var percent = res.data[coin].quote['USD']['percent_change_'+span]
+  return percent
+}
 
 
 
-// cache api response 10 min.
-// get inline symbol coinlib ?
-// grin + doge https://live.blockcypher.com/
 
 
 
