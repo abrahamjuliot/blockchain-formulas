@@ -1,12 +1,12 @@
 function blockchain() {
   return {
-    BTC: function() {
-      return {
-        url: function(wallet) { return 'https://blockchain.info/rawaddr/'+wallet },
-        balance: function(res) { return res.final_balance },
-        decimalPlace: 8
-      }
-    },
+//    BTC: function() {
+//      return {
+//        url: function(wallet) { return 'https://blockchain.info/rawaddr/'+wallet },
+//        balance: function(res) { return res.final_balance },
+//        decimalPlace: 8
+//      }
+//    },
     LTC: function() {
       return {
         url: function(wallet) { return 'https://api.blockcypher.com/v1/ltc/main/addrs/'+wallet+'/balance'},
@@ -21,6 +21,7 @@ function blockchain() {
         decimalPlace: 8
       }
     },
+    BTC: function() { return this.blockchair('bitcoin')},
     BCH: function() { return this.blockchair('bitcoin-cash')},
     BSV: function() { return this.blockchair('bitcoin-sv')},
     ETC: function() {
