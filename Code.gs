@@ -14,7 +14,7 @@ function blockchain() {
         decimalPlace: 8
       }
     },
-    blockchair: function(chain) {
+    blockchair: function(chain) { // supports Bitcoin, Ethereum, Ripple, Bitcoin Cash, Litecoin, Bitcoin SV, Dash, Dogecoin and Groestlcoin
       return {
         url: function(wallet) { return 'https://api.blockchair.com/'+chain+'/dashboards/address/'+wallet},
         balance: function(res, wallet) { return res.data[wallet].address.balance },
