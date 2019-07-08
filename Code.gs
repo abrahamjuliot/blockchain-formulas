@@ -47,23 +47,28 @@ function blockchain() {
 //        decimalPlace: 8
 //      }
 //    },
-    LTC: function() {
-      return {
-        url: function(wallet) { return 'https://api.blockcypher.com/v1/ltc/main/addrs/'+wallet+'/balance'},
-        balance: function(res) { return res.final_balance },
-        decimalPlace: 8
-      }
-    },
+//    LTC: function() {
+//      return {
+//        url: function(wallet) { return 'https://api.blockcypher.com/v1/ltc/main/addrs/'+wallet+'/balance'},
+//        balance: function(res) { return res.final_balance },
+//        decimalPlace: 8
+//      }
+//    },
     blockchair: function(chain) { // supports Bitcoin, Ethereum, Ripple, Bitcoin Cash, Litecoin, Bitcoin SV, Dash, Dogecoin and Groestlcoin
+      var isAccount = chain === 'ripple'
       return {
-        url: function(wallet) { return 'https://api.blockchair.com/'+chain+'/dashboards/address/'+wallet},
-        balance: function(res, wallet) { return res.data[wallet].address.balance },
-        decimalPlace: 8
+        url: function(wallet) { return 'https://api.blockchair.com/'+chain+'/dashboards/'+(isAccount?'account':'address')+'/'+wallet},
+        balance: function(res, wallet) {
+          return isAccount ? res.data[wallet].account.account_data.Balance: res.data[wallet].address.balance
+        },
+        decimalPlace: isAccount ? 6 : 8
       }
     },
     BTC: function() { return this.blockchair('bitcoin')},
+    LTC: function() { return this.blockchair('litecoin')},
     BCH: function() { return this.blockchair('bitcoin-cash')},
     BSV: function() { return this.blockchair('bitcoin-sv')},
+    XRP: function() { return this.blockchair('ripple')},
     ETC: function() {
       return { 
         url: function(wallet) { return 'https://api.gastracker.io/addr/'+wallet},
@@ -95,13 +100,13 @@ function blockchain() {
         decimalPlace: 0
       }
     },
-    XRP: function() {
-      return {
-        url: function(wallet) { return 'https://api.xrpscan.com/api/v1/account/'+wallet},
-        balance: function(res) { return res.xrpBalance },
-        decimalPlace: 0
-      }
-    },
+//    XRP: function() {
+//      return {
+//        url: function(wallet) { return 'https://api.xrpscan.com/api/v1/account/'+wallet},
+//        balance: function(res) { return res.xrpBalance },
+//        decimalPlace: 0
+//      }
+//    },
     XLM: function() {
       return {
         url: function(wallet) { return 'https://horizon.stellar.org/accounts/'+wallet},
