@@ -1,3 +1,43 @@
+function coinbase(coin, key, secret) {
+  // only provide wallet:accounts:read
+  var apiUrl = 'https://api.coinbase.com'
+  var time = Math.floor(((new Date()).getTime()/1000)).toString()
+  var method = 'GET'
+  var path = '/v2/accounts'
+  var body = ''
+  
+  // Encrypt signature
+  var signature = time+method+path+body
+  var signatureByteHash = Utilities.computeHmacSha256Signature(signature, secret)
+  var signatureHexHash = signatureByteHash.reduce(function(str, chr) {
+    chr = (chr < 0 ? chr + 256 : chr).toString(16)
+    return str + (chr.length=== 1 ? '0' : '') + chr
+  },'')
+  
+  // Get data
+  var requestUrl = apiUrl+path
+  var params = {
+    'method': method,
+    'headers': {
+      'CB-ACCESS-KEY': key,
+      'CB-ACCESS-SIGN': signatureHexHash,
+      'CB-ACCESS-TIMESTAMP': time,
+      'CB-VERSION': '2018-07-07',
+      'Content-Type': 'application/json'
+    }
+  }
+  var json = UrlFetchApp.fetch(requestUrl, params)
+  var res = JSON.parse(json)
+  var data = res.data
+  for (var i in data) {
+    var item = data[i]
+    if (item.balance.currency === coin) {
+      return item.balance.amount
+    }
+  }
+  return 0
+}
+
 function blockchain() {
   return {
 //    BTC: function() {
