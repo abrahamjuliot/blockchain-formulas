@@ -4,7 +4,7 @@ Wallet Balance and Market Price via Google Apps Script (Sheets)
 ## Example
 =WALLET({:token symbol}, {:wallet address}, {:optional api key}, {:optional token contract address})
 
-## API's
+## APIs
 - BTC
 - LTC
 - XRP
