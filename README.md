@@ -1,4 +1,4 @@
-# blockchains
+# blockchain formulas
 Wallet Balance and Market Price via Google Apps Script (Sheets)
 
 ## Example
